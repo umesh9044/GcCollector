@@ -69,7 +69,6 @@
                    android:textSize="16sp"
                    android:textStyle="bold"/>
 
-
            </LinearLayout>
 
        </com.google.android.material.card.MaterialCardView>

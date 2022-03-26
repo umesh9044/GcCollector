@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.graphics.NinePatch;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -134,11 +135,13 @@ public class BinActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 currentLocation = locationResult.getLocations().get(0);
+                double longitude = currentLocation.getLongitude();
+                double latitude = currentLocation.getLatitude();
+                Toast.makeText(BinActivity.this,"longitude:"+longitude+" latitude:"+latitude,Toast.LENGTH_LONG).show();
                 getAddress();
             }
         };
         startLocationUpdates();
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
