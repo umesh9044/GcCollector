@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.daily.gccollector.Utility.AppConstraint;
 import com.daily.gccollector.Volley.VolleyClient;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import org.json.JSONObject;
 public class LoginActivity extends AppCompatActivity {
     com.google.android.material.textfield.TextInputLayout txtUser,txtPassword;
     com.google.android.material.button.MaterialButton btnLogin;
+    LinearProgressIndicator prsLoader;
     private SharedPreferences prefSFA;
 
     @Override
@@ -45,11 +47,13 @@ public class LoginActivity extends AppCompatActivity {
         txtUser=findViewById(R.id.txtUser);
         txtPassword=findViewById(R.id.txtPassword);
         btnLogin=findViewById(R.id.btnLogin);
+        prsLoader=findViewById(R.id.prsLoader);
+        prsLoader.setVisibility(View.GONE);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                prsLoader.setVisibility(View.VISIBLE);
                 String UserName =txtUser.getEditText().getText().toString().trim();
                 String Password =txtPassword.getEditText().getText().toString().trim();
 
@@ -58,11 +62,16 @@ public class LoginActivity extends AppCompatActivity {
 
                     Snackbar.make(view, "Invalid User Or Password!!", Snackbar.LENGTH_LONG)
                             .setAction("Login", null).show();
+
+                    prsLoader.setVisibility(View.GONE);
                 }
                 else
                 {
+
                     login(UserName,Password);
+
                 }
+
             }
         });
     }
@@ -133,5 +142,6 @@ public class LoginActivity extends AppCompatActivity {
             ex.printStackTrace();
             Toast.makeText(LoginActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        prsLoader.setVisibility(View.GONE);
     }
 }

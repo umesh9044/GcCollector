@@ -16,6 +16,13 @@
             android:layout_marginTop="200dp"
             android:padding="10dp">
 
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/prsLoader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:indeterminate="true" />
+
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
