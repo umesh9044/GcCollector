@@ -12,8 +12,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.daily.gccollector.Utility.AppConstraint;
+import com.daily.gccollector.Volley.VolleyClient;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONObject;
 
 public class VehicleActivity extends AppCompatActivity {
     private SharedPreferences sharedpreferences;
@@ -48,17 +57,62 @@ public class VehicleActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString(AppConstraint.PRF_VEHICLENO, VehicleNo);
-                    editor.commit();
-
-                    Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
-                    startActivity(intent);
-                    finish();
+                    VehicleNoIsValid(VehicleNo);
                 }
             }
         });
+    }
+    private void VehicleNoIsValid(String VehicleNo) {
+        RequestQueue queue = VolleyClient.getInstance(VehicleActivity.this).getRequestQueue();
+        try {
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConstraint.GET_VEHICLE_DTL+"?VehicleNo="+VehicleNo,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response)
+                        {
+                            try {
+                                if(response.getInt("status")==1)
+                                {
+//                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
+//                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+//                                    editor.putString(AppConstraint.PRF_VEHICLENO, VehicleNo);
+//                                    editor.commit();
+//
+//                                    Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
+//                                    startActivity(intent);
+//                                    finish();
+                                }
+                                else
+                                {
+                                    Toast.makeText(VehicleActivity.this,response.getString("message"),Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.printStackTrace();
+                                Toast.makeText(VehicleActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Toast.makeText(VehicleActivity.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    50000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsObjRequest);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Toast.makeText(VehicleActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

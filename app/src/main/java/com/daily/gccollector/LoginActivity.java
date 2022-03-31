@@ -59,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(UserName.length()==0 || Password.length()==0)
                 {
-
                     Snackbar.make(view, "Invalid User Or Password!!", Snackbar.LENGTH_LONG)
                             .setAction("Login", null).show();
 
@@ -67,11 +66,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-
                     login(UserName,Password);
-
                 }
-
             }
         });
     }

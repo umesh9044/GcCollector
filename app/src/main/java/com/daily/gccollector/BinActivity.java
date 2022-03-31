@@ -35,14 +35,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.daily.gccollector.Services.GetAddressIntentService;
 import com.daily.gccollector.Utility.AppConstraint;
+import com.daily.gccollector.Volley.VolleyClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.snackbar.Snackbar;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,17 +122,14 @@ public class BinActivity extends AppCompatActivity {
         btnSubmitBin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String BinRFIDNo =txtBinRFIDNo.getEditText().getText().toString().trim();
-                if(BinRFIDNo.length()==0)
+                String BinNo =txtBinRFIDNo.getEditText().getText().toString().trim();
+                if(BinNo.length()==0)
                 {
                     Toast.makeText(BinActivity.this,"Please Enter/Scan RFID NO First!!",Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-                    Toast.makeText(BinActivity.this,"Submit Successfully!!",Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(BinActivity.this, BinActivity.class);
-                    startActivity(intent);
-                    finish();
+                    BinNoIsValid(BinNo);
                 }
             }
         });
@@ -142,6 +148,55 @@ public class BinActivity extends AppCompatActivity {
             }
         };
         startLocationUpdates();
+    }
+
+    private void BinNoIsValid(String BinNo) {
+        RequestQueue queue = VolleyClient.getInstance(BinActivity.this).getRequestQueue();
+        try {
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConstraint.GET_BIN_DTL+"?BinNo="+BinNo,null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response)
+                        {
+                            try {
+                                if(response.getInt("status")==1)
+                                {
+                                    Toast.makeText(BinActivity.this,"Submit Successfully!!",Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(BinActivity.this, BinActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else
+                                {
+                                    Toast.makeText(BinActivity.this,response.getString("message"),Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.printStackTrace();
+                                Toast.makeText(BinActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Toast.makeText(BinActivity.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    50000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsObjRequest);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Toast.makeText(BinActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
