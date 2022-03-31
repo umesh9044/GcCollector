@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.location.Geocoder;
 import android.location.Location;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -50,6 +52,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
@@ -71,10 +74,9 @@ public class BinActivity extends AppCompatActivity {
     private LocationCallback locationCallback;
 
 
-
-    Button btnFullBin,btnEmptyBin,btnSubmitBin;
+    Button btnFullBin,btnEmptyBin,btnSubmitBin,btnCheckBin;
     ImageView FullBinImage,EmptyBinImage;
-    String FullBinImageStr,EmptyBinImageStr;
+    String FullBinImageStr,EmptyBinImageStr,longitude,latitude;
     com.google.android.material.textfield.TextInputLayout txtBinRFIDNo;
     public static final int RequestPermissionCode = 1;
     @Override
@@ -103,6 +105,7 @@ public class BinActivity extends AppCompatActivity {
         lblVehicleNo = findViewById(R.id.lblVehicleNo);
         txtBinRFIDNo = findViewById(R.id.txtBinRFIDNo);
         btnSubmitBin = findViewById(R.id.btnSubmitBin);
+        btnCheckBin = findViewById(R.id.btnCheckBin);
 
         lblDeviceNo.setText("DeviceNo: "+DeviceNo);
         lblVehicleNo.setText("VehicleNo: "+VehicleNo);
@@ -122,7 +125,7 @@ public class BinActivity extends AppCompatActivity {
                 startActivityForResult(intent, 8);
             }
         });
-        btnSubmitBin.setOnClickListener(new View.OnClickListener() {
+        btnCheckBin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String BinNo =txtBinRFIDNo.getEditText().getText().toString().trim();
@@ -136,6 +139,23 @@ public class BinActivity extends AppCompatActivity {
                 }
             }
         });
+        btnSubmitBin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String BinNo =txtBinRFIDNo.getEditText().getText().toString().trim();
+                if(BinNo.length()==0)
+                {
+                    Toast.makeText(BinActivity.this,"Please Enter/Scan RFID NO First!!",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    //if(BinNoIsValid(BinNo))
+                    {
+                        SaveBin();
+                    }
+                }
+            }
+        });
 
         addressResultReceiver = new LocationAddressResultReceiver(new Handler());
         lblCurrentLocation = findViewById(R.id.lblCurrentLocation);
@@ -144,19 +164,21 @@ public class BinActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 currentLocation = locationResult.getLocations().get(0);
-                double longitude = currentLocation.getLongitude();
-                double latitude = currentLocation.getLatitude();
-                Toast.makeText(BinActivity.this,"longitude:"+longitude+" latitude:"+latitude,Toast.LENGTH_LONG).show();
+                longitude = String.valueOf(currentLocation.getLongitude());
+                latitude = String.valueOf(currentLocation.getLatitude());
+
+                //Toast.makeText(BinActivity.this,"longitude:"+longitude+" latitude:"+latitude,Toast.LENGTH_LONG).show();
                 getAddress();
             }
         };
         startLocationUpdates();
     }
 
-    private void BinNoIsValid(String BinNo) {
+    private Boolean BinNoIsValid(String BinNo) {
+        final Boolean[] IsValid = {false};
         RequestQueue queue = VolleyClient.getInstance(BinActivity.this).getRequestQueue();
         try {
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConstraint.GET_BIN_DTL+"?BinNo="+BinNo,null,
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConstraint.GET_BIN_DTL+"?BinRFID="+BinNo,null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response)
@@ -164,7 +186,77 @@ public class BinActivity extends AppCompatActivity {
                             try {
                                 if(response.getInt("status")==1)
                                 {
-                                    Toast.makeText(BinActivity.this,"Submit Successfully!!",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(BinActivity.this,"Bin is Exist!!",Toast.LENGTH_LONG).show();
+                                    IsValid[0] =true;
+                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString(AppConstraint.PRF_BINNO, BinNo);
+                                    editor.commit();
+                                }
+                                else
+                                {
+                                    Toast.makeText(BinActivity.this,response.getString("message"),Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ex.printStackTrace();
+                                Toast.makeText(BinActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error.printStackTrace();
+                            Toast.makeText(BinActivity.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    50000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsObjRequest);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            Toast.makeText(BinActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return IsValid[0];
+    }
+
+    private void SaveBin() {
+        RequestQueue queue = VolleyClient.getInstance(BinActivity.this).getRequestQueue();
+        try {
+            JSONObject obj = new  JSONObject();
+            obj.put("id", 0);
+            obj.put("deviceNo", sharedpreferences.getString(AppConstraint.PRF_DEVICENO, ""));
+            obj.put("vehicleNo", sharedpreferences.getString(AppConstraint.PRF_VEHICLENO, ""));
+            obj.put("userID", sharedpreferences.getString(AppConstraint.PRF_USER, ""));
+            obj.put("binRFID", sharedpreferences.getString(AppConstraint.PRF_BINNO, ""));
+            obj.put("emptyImage", EmptyBinImageStr);
+            obj.put("fullImage", FullBinImageStr);
+            obj.put("latitude", latitude);
+            obj.put("longitude", longitude);
+            obj.put("location", lblCurrentLocation.getText());
+
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, AppConstraint.POST_BIN,obj,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response)
+                        {
+                            try {
+                                if(response.getInt("status")==1)
+                                {
+                                    Toast.makeText(BinActivity.this,"Record Saved!!",Toast.LENGTH_LONG).show();
+
+                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString(AppConstraint.PRF_BINNO, "");
+                                    editor.commit();
+
                                     Intent intent = new Intent(BinActivity.this, BinActivity.class);
                                     startActivity(intent);
                                     finish();

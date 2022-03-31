@@ -73,14 +73,14 @@ public class VehicleActivity extends AppCompatActivity {
                             try {
                                 if(response.getInt("status")==1)
                                 {
-//                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
-//                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-//                                    editor.putString(AppConstraint.PRF_VEHICLENO, VehicleNo);
-//                                    editor.commit();
-//
-//                                    Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
-//                                    startActivity(intent);
-//                                    finish();
+                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                                    editor.putString(AppConstraint.PRF_VEHICLENO, VehicleNo);
+                                    editor.commit();
+
+                                    Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 }
                                 else
                                 {
