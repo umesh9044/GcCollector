@@ -73,7 +73,6 @@ public class DeviceActivity extends AppCompatActivity {
                             try {
                                 if(response.getInt("status")==1)
                                 {
-
 //                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
 //                                    SharedPreferences.Editor editor = sharedpreferences.edit();
 //                                    editor.putString(AppConstraint.PRF_DEVICENO, DeviceNo);

@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +54,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -72,6 +74,7 @@ public class BinActivity extends AppCompatActivity {
 
     Button btnFullBin,btnEmptyBin,btnSubmitBin;
     ImageView FullBinImage,EmptyBinImage;
+    String FullBinImageStr,EmptyBinImageStr;
     com.google.android.material.textfield.TextInputLayout txtBinRFIDNo;
     public static final int RequestPermissionCode = 1;
     @Override
@@ -239,13 +242,23 @@ public class BinActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 7 && resultCode == RESULT_OK)
         {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            FullBinImage.setImageBitmap(bitmap);
+            Bitmap bm = (Bitmap) data.getExtras().get("data");
+            FullBinImage.setImageBitmap(bm);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
+            byte[] imgbyte = baos.toByteArray();
+            FullBinImageStr = Base64.encodeToString(imgbyte, Base64.DEFAULT);
         }
         else if (requestCode == 8 && resultCode == RESULT_OK)
         {
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            EmptyBinImage.setImageBitmap(bitmap);
+            Bitmap bm = (Bitmap) data.getExtras().get("data");
+            EmptyBinImage.setImageBitmap(bm);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
+            byte[] imgbyte = baos.toByteArray();
+            EmptyBinImageStr = Base64.encodeToString(imgbyte, Base64.DEFAULT);
         }
     }
     public void EnableRuntimePermission(){
