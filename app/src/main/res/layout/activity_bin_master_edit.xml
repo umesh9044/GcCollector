@@ -24,7 +24,6 @@
             android:id="@+id/txtBinName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="10dp"
             android:hint="Bin Name">
 
@@ -38,7 +37,6 @@
             android:id="@+id/txtBinCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="10dp"
             android:hint="Bin Code">
 
@@ -52,7 +50,6 @@
             android:id="@+id/txtDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="10dp"
             android:hint="Description">
             <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +85,6 @@
             android:id="@+id/txtLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
             android:layout_marginTop="10dp"
             android:hint="Location">
             <com.google.android.material.textfield.TextInputEditText
