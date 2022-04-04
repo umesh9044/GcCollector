@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/itemLayout"
+    android:focusable="true"
+    android:background="#FFFAFA"
+    android:clickable="true">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_height="80dp"
+        android:layout_width="match_parent"
+        android:layout_margin="2dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/tvbinname"
+                tools:text="@tools:sample/full_names"
+                android:textSize="16sp"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:textColor="#121212"/>
+
+            <TextView
+                android:layout_below="@+id/tvbinname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/full_names"
+                android:padding="2dp"
+                android:textColor="#121212"
+                android:textSize="12sp"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tvbincode" />
+            <TextView
+                android:layout_below="@+id/tvbincode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@tools:sample/full_names"
+                android:padding="2dp"
+                android:textColor="#121212"
+                android:textSize="16sp"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/tvDesc" />
+            <Button
+                android:layout_toRightOf="@+id/tvbinname"
+                android:id="@+id/btnEditBin"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#4CAF50"
+                android:gravity="right"
+                android:drawableLeft="@android:drawable/ic_menu_edit">
+            </Button>
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

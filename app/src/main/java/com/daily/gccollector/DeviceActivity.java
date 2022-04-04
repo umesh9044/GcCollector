@@ -27,7 +27,7 @@ import org.json.JSONObject;
 public class DeviceActivity extends AppCompatActivity {
     private SharedPreferences sharedpreferences;
     com.google.android.material.textfield.TextInputLayout txtDeviceNo;
-    com.google.android.material.button.MaterialButton btnDeviceSubmit;
+    com.google.android.material.button.MaterialButton btnDeviceSubmit,btnBinMaster;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class DeviceActivity extends AppCompatActivity {
         }
         txtDeviceNo=findViewById(R.id.txtDeviceNo);
         btnDeviceSubmit=findViewById(R.id.btnDeviceSubmit);
+        btnBinMaster=findViewById(R.id.btnBinMaster);
 
         btnDeviceSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +60,14 @@ public class DeviceActivity extends AppCompatActivity {
                 {
                     DeviceNoIsValid(DeviceNo);
                 }
+            }
+        });
+        btnBinMaster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DeviceActivity.this, BinMasterActivityList.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

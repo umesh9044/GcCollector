@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin.xml" value="0.4" />
+        <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin_master.xml" value="0.25" />
+        <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin_master_item_row.xml" value="0.264" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_device.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_main.xml" value="0.25" />

@@ -33,6 +33,15 @@
             android:text="Submit"
             style="@style/Widget.MaterialComponents.Button.Icon"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBinMaster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Update Bin Location"
+            style="@style/Widget.MaterialComponents.Button.Icon"/>
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
