@@ -67,7 +67,6 @@ public class DeviceActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(DeviceActivity.this, BinMasterActivityList.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

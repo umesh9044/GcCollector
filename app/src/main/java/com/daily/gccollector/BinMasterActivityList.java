@@ -77,6 +77,7 @@ public class BinMasterActivityList extends AppCompatActivity {
                                     {
                                         JSONObject obj = data.getJSONObject(i);
                                         BinMaster bin = new BinMaster();
+                                        bin.setBinLocID(obj.getInt("binLocID"));
                                         bin.setBinLocName(obj.getString("binLocName"));
                                         bin.setBinLocCode(obj.getString("binLocCode"));
                                         bin.setDescription(obj.getString("description"));

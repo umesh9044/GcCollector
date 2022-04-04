@@ -19,4 +19,5 @@ public class AppConstraint {
     public  static String POST_BIN= BASE_URL+"/Master/UpsertBinScanningData";
 
     public  static String GET_ALL_BIN= BASE_URL+"/Master/GetBinLocation";
+    public  static String POST_BIN_LOCATION= BASE_URL+"/Master/UpdateBinLocation";
 }
