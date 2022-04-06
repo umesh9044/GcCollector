@@ -150,15 +150,30 @@
            android:layout_height="wrap_content"
            android:layout_marginTop="25dp">
 
-           <Button
-               android:id="@+id/btnSubmitBin"
+           <LinearLayout
                android:layout_width="match_parent"
-               android:layout_height="70dp"
-               android:textStyle="bold"
-               android:textSize="24sp"
-               android:layout_margin="10dp"
-               android:text="Submit"
-               android:layout_gravity="center" />
+               android:orientation="vertical"
+               android:layout_height="match_parent">
+               <Button
+                   android:id="@+id/btnSubmitBin"
+                   android:layout_width="match_parent"
+                   android:layout_height="70dp"
+                   android:textStyle="bold"
+                   android:textSize="24sp"
+                   android:layout_margin="10dp"
+                   android:text="Submit"
+                   android:layout_gravity="center" />
+
+               <Button
+                   android:id="@+id/btnSubmit"
+                   android:layout_width="match_parent"
+                   android:layout_height="70dp"
+                   android:textStyle="bold"
+                   android:textSize="24sp"
+                   android:layout_margin="10dp"
+                   android:text="Close Scanning"
+                   android:layout_gravity="center" />
+           </LinearLayout>
 
        </com.google.android.material.card.MaterialCardView>
 

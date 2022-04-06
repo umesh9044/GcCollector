@@ -35,6 +35,7 @@
         <activity android:name=".BinActivity"></activity>
         <activity android:name=".BinMasterActivityList"></activity>
         <activity android:name=".BinMasterActivityEdit"></activity>
+        <activity android:name=".VehicleActivitySubmit"></activity>
         <service android:name=".Services.GetAddressIntentService" />
     </application>
 

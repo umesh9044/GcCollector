@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin.xml" value="0.4" />
+        <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin.xml" value="0.32432432432432434" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin_master.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin_master_edit.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_bin_master_item_row.xml" value="0.264" />
@@ -13,6 +13,7 @@
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_main2.xml" value="0.24947916666666667" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_vehicle.xml" value="0.25" />
+        <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/layout/activity_vehicle_submit.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/MSSPL/GcApp/app/src/main/res/menu/menu_main.xml" value="0.25" />
         <entry key="..\:/Umesh/Projects/RND/GcCollector/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Umesh/Projects/RND/GcCollector/app/src/main/res/layout/activity_main.xml" value="0.1" />

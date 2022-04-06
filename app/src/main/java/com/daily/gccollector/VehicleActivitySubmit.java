@@ -41,10 +41,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONObject;
 
-public class VehicleActivity extends AppCompatActivity {
+public class VehicleActivitySubmit extends AppCompatActivity {
     private SharedPreferences sharedpreferences;
-    TextInputLayout txtVehicleNo,txtStartMtrRd,txtStartLat,txtStartLng,txtStartLocation;
-    MaterialButton btnCheckVehicle,btnVehicleSubmit;
+    TextInputLayout txtFuel,txtEndMtrRd,txtEndLat,txtEndLng,txtEndLocation;
+    MaterialButton btnVehicleSubmit;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
@@ -56,56 +56,31 @@ public class VehicleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vehicle);
-        setTitle("VEHICLE");
+        setContentView(R.layout.activity_vehicle_submit);
+        setTitle("Close Scanning");
 
         sharedpreferences= getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
         String VehicleNo = sharedpreferences.getString(AppConstraint.PRF_VEHICLENO, "");
-        if(!VehicleNo.equals(""))
+        if(VehicleNo.equals(""))
         {
-            Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
+            Intent intent = new Intent(VehicleActivitySubmit.this, VehicleActivity.class);
             startActivity(intent);
             finish();
         }
-        txtVehicleNo=findViewById(R.id.txtVehicleNo);
-        txtStartMtrRd=findViewById(R.id.txtStartMtrRd);
-        txtStartLat=findViewById(R.id.txtStartLat);
-        txtStartLng=findViewById(R.id.txtStartLng);
-        txtStartLocation=findViewById(R.id.txtStartLocation);
+        txtFuel=findViewById(R.id.txtFuel);
+        txtEndMtrRd=findViewById(R.id.txtEndMtrRd);
+        txtEndLat=findViewById(R.id.txtEndLat);
+        txtEndLng=findViewById(R.id.txtEndLng);
+        txtEndLocation=findViewById(R.id.txtEndLocation);
 
-        btnCheckVehicle=findViewById(R.id.btnCheckVehicle);
         btnVehicleSubmit=findViewById(R.id.btnVehicleSubmit);
-
-        btnCheckVehicle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String VehicleNo =txtVehicleNo.getEditText().getText().toString().trim();
-                if(VehicleNo.length()==0)
-                {
-                    Snackbar.make(view, "Please Enter Vehicle No First!!", Snackbar.LENGTH_LONG)
-                            .setAction("Device No", null).show();
-                }
-                else
-                {
-                    VehicleNoIsValid(VehicleNo);
-                }
-            }
-        });
         btnVehicleSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String VehicleNo =txtVehicleNo.getEditText().getText().toString().trim();
-                if(VehicleNo.length()==0)
-                {
-                    Snackbar.make(view, "Please Enter Vehicle No First!!", Snackbar.LENGTH_LONG)
-                            .setAction("Device No", null).show();
-                }
-                else
-                {
-                    VehicleSubmit(VehicleNo);
-                }
+                VehicleSubmit(VehicleNo);
             }
         });
+
 
 
 
@@ -118,63 +93,17 @@ public class VehicleActivity extends AppCompatActivity {
                 String longitude = String.valueOf(currentLocation.getLongitude());
                 String latitude = String.valueOf(currentLocation.getLatitude());
 
-                txtStartLng.getEditText().setText(longitude);
-                txtStartLat.getEditText().setText(latitude);
+                txtEndLng.getEditText().setText(longitude);
+                txtEndLat.getEditText().setText(latitude);
                 //Toast.makeText(BinActivity.this,"longitude:"+longitude+" latitude:"+latitude,Toast.LENGTH_LONG).show();
                 getAddress();
             }
         };
         startLocationUpdates();
-
-
     }
-    private void VehicleNoIsValid(String VehicleNo) {
-        RequestQueue queue = VolleyClient.getInstance(VehicleActivity.this).getRequestQueue();
-        try {
-            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, AppConstraint.GET_VEHICLE_DTL+"?VehicleNo="+VehicleNo,null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response)
-                        {
-                            try {
-                                if(response.getInt("status")==1)
-                                {
-                                    Toast.makeText(VehicleActivity.this,"Valid!!",Toast.LENGTH_LONG).show();
-                                }
-                                else
-                                {
-                                    Toast.makeText(VehicleActivity.this,response.getString("message"),Toast.LENGTH_LONG).show();
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                ex.printStackTrace();
-                                Toast.makeText(VehicleActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                            Toast.makeText(VehicleActivity.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
-                        }
-                    });
 
-            jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    50000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            queue.add(jsObjRequest);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-            Toast.makeText(VehicleActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
     private void VehicleSubmit(String VehicleNo) {
-        RequestQueue queue = VolleyClient.getInstance(VehicleActivity.this).getRequestQueue();
+        RequestQueue queue = VolleyClient.getInstance(VehicleActivitySubmit.this).getRequestQueue();
         try {
 
             JSONObject obj = new JSONObject();
@@ -182,10 +111,11 @@ public class VehicleActivity extends AppCompatActivity {
             obj.put("deviceNo", sharedpreferences.getString(AppConstraint.PRF_DEVICENO, ""));
             obj.put("vehicleNo", VehicleNo);
             obj.put("userID",sharedpreferences.getString(AppConstraint.PRF_USER, ""));
-            obj.put("startReading",txtStartMtrRd.getEditText().getText());
-            obj.put("startLatitude", txtStartLng.getEditText().getText());
-            obj.put("startLongitude", txtStartLng.getEditText().getText());
-            obj.put("startLocation", txtStartLocation.getEditText().getText());
+            obj.put("endReading",txtEndMtrRd.getEditText().getText());
+            obj.put("endLatitude", txtEndLng.getEditText().getText());
+            obj.put("endLongitude", txtEndLng.getEditText().getText());
+            obj.put("endLocation", txtEndLocation.getEditText().getText());
+            obj.put("fuelConsumption", txtFuel.getEditText().getText());
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, AppConstraint.POST_VEHICLE_DTL,obj,
                     new Response.Listener<JSONObject>() {
@@ -195,24 +125,17 @@ public class VehicleActivity extends AppCompatActivity {
                             try {
                                 if(response.getInt("status")==1)
                                 {
-                                    SharedPreferences sharedpreferences = getSharedPreferences(AppConstraint.PRF_LOGINAUTH, Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                                    editor.putString(AppConstraint.PRF_VEHICLENO, VehicleNo);
-                                    editor.commit();
-
-                                    Intent intent = new Intent(VehicleActivity.this, BinActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    Toast.makeText(VehicleActivitySubmit.this,"Record Saved.. You Can Logout!!",Toast.LENGTH_LONG).show();
                                 }
                                 else
                                 {
-                                    Toast.makeText(VehicleActivity.this,response.getString("message"),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(VehicleActivitySubmit.this,response.getString("message"),Toast.LENGTH_LONG).show();
                                 }
                             }
                             catch (Exception ex)
                             {
                                 ex.printStackTrace();
-                                Toast.makeText(VehicleActivity.this,ex.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(VehicleActivitySubmit.this,ex.getMessage(),Toast.LENGTH_LONG).show();
                             }
                         }
                     },
@@ -220,7 +143,7 @@ public class VehicleActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             error.printStackTrace();
-                            Toast.makeText(VehicleActivity.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(VehicleActivitySubmit.this,"Error:"+error.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     });
 
@@ -233,7 +156,7 @@ public class VehicleActivity extends AppCompatActivity {
         catch (Exception ex)
         {
             ex.printStackTrace();
-            Toast.makeText(VehicleActivity.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(VehicleActivitySubmit.this, "Error:"+ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
     @Override
@@ -260,10 +183,10 @@ public class VehicleActivity extends AppCompatActivity {
             editor.putString(AppConstraint.PRF_DEVICENO, "");
             editor.putString(AppConstraint.PRF_VEHICLENO, "");
             editor.commit();
-            Intent intent = new Intent(VehicleActivity.this, LoginActivity.class);
+            Intent intent = new Intent(VehicleActivitySubmit.this, LoginActivity.class);
             startActivity(intent);
             finish();
-            Toast.makeText(VehicleActivity.this,"Logout Successfully!!",Toast.LENGTH_LONG).show();
+            Toast.makeText(VehicleActivitySubmit.this,"Logout Successfully!!",Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -279,7 +202,7 @@ public class VehicleActivity extends AppCompatActivity {
                 if (result.length > 0 && result[0] == PackageManager.PERMISSION_GRANTED) {
                     //Toast.makeText(BinActivity.this, "Permission Granted, Now your application can access CAMERA.", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(VehicleActivity.this, "Permission Canceled, Now your application cannot access CAMERA.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(VehicleActivitySubmit.this, "Permission Canceled, Now your application cannot access CAMERA.", Toast.LENGTH_LONG).show();
                 }
                 break;
             case LOCATION_PERMISSION_REQUEST_CODE:
@@ -313,7 +236,7 @@ public class VehicleActivity extends AppCompatActivity {
     @SuppressWarnings("MissingPermission")
     private void getAddress() {
         if (!Geocoder.isPresent()) {
-            Toast.makeText(VehicleActivity.this, "Can't find current address, ",
+            Toast.makeText(VehicleActivitySubmit.this, "Can't find current address, ",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -333,14 +256,14 @@ public class VehicleActivity extends AppCompatActivity {
                 getAddress();
             }
             if (resultCode == 1) {
-                Toast.makeText(VehicleActivity.this, "Address not found, ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(VehicleActivitySubmit.this, "Address not found, ", Toast.LENGTH_SHORT).show();
             }
             String currentAdd = resultData.getString("address_result");
             showResults(currentAdd);
         }
     }
     private void showResults(String currentAdd) {
-        txtStartLocation.getEditText().setText(currentAdd);
+        txtEndLocation.getEditText().setText(currentAdd);
     }
     @Override
     protected void onResume() {

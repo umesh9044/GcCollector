@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VehicleActivity">
+    tools:context=".VehicleActivitySubmit">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,35 +12,9 @@
         android:orientation="vertical"
         android:padding="15dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:id="@+id/txtVehicleNo"
-                android:layout_width="280dp"
-                android:layout_height="wrap_content"
-                android:hint="Enter/Scan Vehicle No.">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCheckVehicle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:text="Check"
-                style="@style/Widget.MaterialComponents.Button.Icon"/>
-        </TableRow>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/txtStartMtrRd"
+            android:id="@+id/txtEndMtrRd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -52,7 +26,19 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/txtStartLat"
+            android:id="@+id/txtFuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Enter Fuel Consumption">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/txtEndLat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -64,7 +50,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/txtStartLng"
+            android:id="@+id/txtEndLng"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
@@ -76,7 +62,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/txtStartLocation"
+            android:id="@+id/txtEndLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

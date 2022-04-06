@@ -74,7 +74,7 @@ public class BinActivity extends AppCompatActivity {
     private LocationCallback locationCallback;
 
 
-    Button btnFullBin,btnEmptyBin,btnSubmitBin,btnCheckBin;
+    Button btnFullBin,btnEmptyBin,btnSubmitBin,btnCheckBin,btnSubmit;
     ImageView FullBinImage,EmptyBinImage;
     String FullBinImageStr,EmptyBinImageStr,longitude,latitude;
     com.google.android.material.textfield.TextInputLayout txtBinRFIDNo;
@@ -106,6 +106,7 @@ public class BinActivity extends AppCompatActivity {
         txtBinRFIDNo = findViewById(R.id.txtBinRFIDNo);
         btnSubmitBin = findViewById(R.id.btnSubmitBin);
         btnCheckBin = findViewById(R.id.btnCheckBin);
+        btnSubmit=findViewById(R.id.btnSubmit);
 
         lblDeviceNo.setText("DeviceNo: "+DeviceNo);
         lblVehicleNo.setText("VehicleNo: "+VehicleNo);
@@ -154,6 +155,13 @@ public class BinActivity extends AppCompatActivity {
                         SaveBin();
                     }
                 }
+            }
+        });
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BinActivity.this, VehicleActivitySubmit.class);
+                startActivity(intent);
             }
         });
 

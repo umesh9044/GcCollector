@@ -15,8 +15,10 @@ public class AppConstraint {
     public  static String POST_LOGIN= BASE_URL+"/Auth/login";
     public  static String GET_DEVICE_DTL= BASE_URL+"/Master/GetDeviceNo";
     public  static String GET_VEHICLE_DTL= BASE_URL+"/Master/GetVehicleNo";
+    public  static String POST_VEHICLE_DTL= BASE_URL+"/Master/UpsertVehicleScanningData";
     public  static String GET_BIN_DTL= BASE_URL+"/Master/GetBinDetail";
     public  static String POST_BIN= BASE_URL+"/Master/UpsertBinScanningData";
+
 
     public  static String GET_ALL_BIN= BASE_URL+"/Master/GetBinLocation";
     public  static String POST_BIN_LOCATION= BASE_URL+"/Master/UpdateBinLocation";
