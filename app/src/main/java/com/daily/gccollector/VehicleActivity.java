@@ -182,7 +182,9 @@ public class VehicleActivity extends AppCompatActivity {
             obj.put("deviceNo", sharedpreferences.getString(AppConstraint.PRF_DEVICENO, ""));
             obj.put("vehicleNo", VehicleNo);
             obj.put("userID",sharedpreferences.getString(AppConstraint.PRF_USER, ""));
-            obj.put("startReading",txtStartMtrRd.getEditText().getText());
+            if(txtStartMtrRd.getEditText().getText().length()>0) {
+                obj.put("startReading",Double.valueOf(txtStartMtrRd.getEditText().getText().toString()));
+            }
             obj.put("startLatitude", txtStartLng.getEditText().getText());
             obj.put("startLongitude", txtStartLng.getEditText().getText());
             obj.put("startLocation", txtStartLocation.getEditText().getText());

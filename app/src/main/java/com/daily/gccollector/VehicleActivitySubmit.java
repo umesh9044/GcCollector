@@ -111,11 +111,16 @@ public class VehicleActivitySubmit extends AppCompatActivity {
             obj.put("deviceNo", sharedpreferences.getString(AppConstraint.PRF_DEVICENO, ""));
             obj.put("vehicleNo", VehicleNo);
             obj.put("userID",sharedpreferences.getString(AppConstraint.PRF_USER, ""));
-            obj.put("endReading",txtEndMtrRd.getEditText().getText());
-            obj.put("endLatitude", txtEndLng.getEditText().getText());
+            if(txtEndMtrRd.getEditText().getText().length()>0) {
+                obj.put("endReading",Double.valueOf(txtEndMtrRd.getEditText().getText().toString()));
+            }
+            obj.put("endLatitude", txtEndLat.getEditText().getText());
             obj.put("endLongitude", txtEndLng.getEditText().getText());
             obj.put("endLocation", txtEndLocation.getEditText().getText());
-            obj.put("fuelConsumption", txtFuel.getEditText().getText());
+            if(txtFuel.getEditText().getText().length()>0) {
+                obj.put("fuelConsumption", Double.valueOf(txtFuel.getEditText().getText().toString()));
+            }
+
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, AppConstraint.POST_VEHICLE_DTL,obj,
                     new Response.Listener<JSONObject>() {
