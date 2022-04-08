@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -146,10 +147,10 @@ public class BinMasterActivityList extends AppCompatActivity {
         //getMenuInflater().inflate(R.menu.menu_main, menu);
         //return true;
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
+        menu.getItem(0).setVisible(true);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.actionSearch)
-                .getActionView();
+        SearchView searchView = (SearchView) menu.findItem(R.id.actionSearch).getActionView();
+        searchView.setVisibility(View.VISIBLE);
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
 
