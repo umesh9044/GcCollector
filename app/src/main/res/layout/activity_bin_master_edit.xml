@@ -1,4 +1,4 @@
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,6 +19,34 @@
             android:text="1"
             android:id="@+id/txtBinId">
         </TextView>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <Button
+                    android:id="@+id/btnBinImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="24sp"
+                    android:text="Click here to take picture Bin"
+                    android:layout_gravity="center" />
+                <ImageView
+                    android:id="@+id/BinImage"
+                    android:padding="20dp"
+                    android:src="@drawable/garbage"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/txtBinName"
@@ -105,4 +133,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

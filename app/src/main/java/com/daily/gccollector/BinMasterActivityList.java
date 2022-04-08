@@ -1,11 +1,15 @@
 package com.daily.gccollector;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -24,6 +29,7 @@ import com.daily.gccollector.Adapters.BinItemAdapter;
 import com.daily.gccollector.Models.BinMaster;
 import com.daily.gccollector.Utility.AppConstraint;
 import com.daily.gccollector.Volley.VolleyClient;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,22 +40,30 @@ public class BinMasterActivityList extends AppCompatActivity {
     ArrayList<BinMaster> itemsList;
     BinItemAdapter binItemAdapter;
     RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeContainer;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bin_master_list);
         setTitle("Bin List");
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
 
-       try {
-           GetAllBins();
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetAllBins();
+            }
+        });
 
-       }
-       catch (Exception ex)
-       {
-           Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
-       }
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
+        GetAllBins();
     }
     private void GetAllBins() {
+        swipeContainer.setRefreshing(true);
         itemsList= new ArrayList<>();
         try {
 
@@ -81,6 +95,7 @@ public class BinMasterActivityList extends AppCompatActivity {
                                         bin.setBinLocName(obj.getString("binLocName"));
                                         bin.setBinLocCode(obj.getString("binLocCode"));
                                         bin.setDescription(obj.getString("description"));
+                                        bin.setLocImage(obj.getString("locImage"));
                                         itemsList.add(bin);
                                     }
                                     recyclerView= (RecyclerView)findViewById(R.id.recycleView);
@@ -101,6 +116,7 @@ public class BinMasterActivityList extends AppCompatActivity {
                                 ex.printStackTrace();
                                 Toast.makeText(BinMasterActivityList.this,ex.getMessage(),Toast.LENGTH_LONG).show();
                             }
+                            swipeContainer.setRefreshing(false);
                         }
                     },
                     new Response.ErrorListener() {
@@ -127,7 +143,34 @@ public class BinMasterActivityList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        //return true;
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.actionSearch)
+                .getActionView();
+        searchView.setSearchableInfo(searchManager
+                .getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.length()>0)
+                {
+                    binItemAdapter.getFilter().filter(newText);
+                }
+                else
+                {
+                    GetAllBins();
+                }
+                return false;
+            }
+        });
         return true;
     }
 

@@ -17,6 +17,7 @@ public class BinMaster {
     public String UpdatedBy ;
     public Date CreatedOn ;
     public Date UpdatedOn ;
+    public String LocImage ;
 
     public BinMaster()
     {
@@ -124,5 +125,13 @@ public class BinMaster {
 
     public void setUpdatedOn(Date updatedOn) {
         UpdatedOn = updatedOn;
+    }
+
+    public String getLocImage() {
+        return LocImage;
+    }
+
+    public void setLocImage(String locImage) {
+        LocImage = locImage;
     }
 }

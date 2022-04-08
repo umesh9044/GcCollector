@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,9 @@ import java.io.ByteArrayOutputStream;
 public class BinMasterActivityEdit extends AppCompatActivity {
     TextView txtBinId;
     TextInputLayout txtBinName,txtBinCode,txtDesc,txtLat,txtLong,txtLocation;
-    Button btnUpdateBin;
+    Button btnUpdateBin,btnBinImage;
+    ImageView BinImage;
+    String BinImageStr;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
@@ -72,6 +76,9 @@ public class BinMasterActivityEdit extends AppCompatActivity {
         txtLocation=findViewById(R.id.txtLocation);
         btnUpdateBin=findViewById(R.id.btnUpdateBin);
 
+        btnBinImage = findViewById(R.id.btnBinImage);
+        BinImage = findViewById(R.id.BinImage);
+
 
 
         Bundle extras = getIntent().getExtras();
@@ -80,6 +87,13 @@ public class BinMasterActivityEdit extends AppCompatActivity {
             txtBinName.getEditText().setText(extras.getString("getBinLocName"));
             txtBinCode.getEditText().setText(extras.getString("getBinLocCode"));
             txtDesc.getEditText().setText(extras.getString("getDescription"));
+
+            String mBase64string= extras.getString("getLocImage");
+            if(mBase64string.length()>0) {
+                byte[] decodedString = Base64.decode(mBase64string, Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                BinImage.setImageBitmap(decodedByte);
+            }
         }
 
         EnableRuntimePermission();
@@ -106,6 +120,13 @@ public class BinMasterActivityEdit extends AppCompatActivity {
                 UpdateBin();
             }
         });
+        btnBinImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, 7);
+            }
+        });
     }
 
     private void UpdateBin() {
@@ -119,6 +140,7 @@ public class BinMasterActivityEdit extends AppCompatActivity {
             obj.put("zoneID",0);
             obj.put("areaID",0);
             obj.put("binSelect",true);
+            obj.put("locImage", BinImageStr);
 
             JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.POST, AppConstraint.POST_BIN_LOCATION,obj,
                     new Response.Listener<JSONObject>() {
@@ -203,26 +225,16 @@ public class BinMasterActivityEdit extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 7 && resultCode == RESULT_OK)
-//        {
-//            Bitmap bm = (Bitmap) data.getExtras().get("data");
-//            FullBinImage.setImageBitmap(bm);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
-//            byte[] imgbyte = baos.toByteArray();
-//            FullBinImageStr = Base64.encodeToString(imgbyte, Base64.DEFAULT);
-//        }
-//        else if (requestCode == 8 && resultCode == RESULT_OK)
-//        {
-//            Bitmap bm = (Bitmap) data.getExtras().get("data");
-//            EmptyBinImage.setImageBitmap(bm);
-//
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
-//            byte[] imgbyte = baos.toByteArray();
-//            EmptyBinImageStr = Base64.encodeToString(imgbyte, Base64.DEFAULT);
-//        }
+        if (requestCode == 7 && resultCode == RESULT_OK)
+        {
+            Bitmap bm = (Bitmap) data.getExtras().get("data");
+            BinImage.setImageBitmap(bm);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); // bm is the bitmap object
+            byte[] imgbyte = baos.toByteArray();
+            BinImageStr = Base64.encodeToString(imgbyte, Base64.DEFAULT);
+        }
     }
     public void EnableRuntimePermission(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(BinMasterActivityEdit.this,
@@ -233,6 +245,7 @@ public class BinMasterActivityEdit extends AppCompatActivity {
                     Manifest.permission.CAMERA}, RequestPermissionCode);
         }
     }
+
 
 
 
