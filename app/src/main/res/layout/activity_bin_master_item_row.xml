@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:id="@+id/itemLayout"
     android:focusable="true"
@@ -10,89 +10,83 @@
     android:clickable="true">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_margin="2dp">
         <RelativeLayout
+            android:orientation="horizontal"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TableRow
-                android:id="@+id/layoutImg"
-                android:layout_height="wrap_content"
-                android:layout_width="100dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:background="#E91E63"
-                    android:layout_marginRight="8dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content">
-                    <ImageView
-                        android:id="@+id/BinImage"
-                        android:src="@drawable/garbage"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center" />
-                </com.google.android.material.card.MaterialCardView>
-
-            </TableRow>
-
-            <TableRow
-                android:id="@id/layoutBin"
-                android:layout_toRightOf="@+id/layoutImg"
-                android:layout_height="wrap_content"
-                android:layout_width="230dp">
-               <RelativeLayout
-                   android:layout_height="wrap_content"
-                   android:layout_width="match_parent">
-                   <TextView
-                       android:layout_width="330dp"
-                       android:layout_height="wrap_content"
-                       android:gravity="left"
-                       android:textAppearance="?android:attr/textAppearanceLarge"
-                       android:id="@+id/tvbinname"
-                       tools:text="@tools:sample/full_names"
-                       android:textSize="16sp"
-                       android:padding="2dp"
-                       android:textColor="#9C27B0"
-                       android:textStyle="bold|italic"/>
-                   <TextView
-                       android:layout_below="@+id/tvbinname"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       tools:text="@tools:sample/full_names"
-                       android:textSize="12sp"
-                       android:gravity="left"
-                       android:padding="2dp"
-                       android:textAppearance="?android:attr/textAppearanceMedium"
-                       android:id="@+id/tvbincode" />
-                   <TextView
-                       android:layout_below="@+id/tvbincode"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       tools:text="@tools:sample/full_names"
-                       android:padding="2dp"
-                       android:textSize="16sp"
-                       android:gravity="left"
-                       android:textAppearance="?android:attr/textAppearanceMedium"
-                       android:id="@+id/tvDesc" />
-               </RelativeLayout>
-            </TableRow>
-            <TableRow
-                android:layout_toRightOf="@+id/layoutBin"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/BinImageCard"
+                android:layout_margin="3dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content">
-                <Button
-                    android:id="@+id/btnEditBin"
-                    android:layout_width="55dp"
+                <ImageView
+                    android:id="@+id/BinImage"
+                    android:src="@drawable/garbage"
+                    android:layout_width="100dp"
+                    android:layout_height="80dp"
+                    android:scaleType="centerCrop"
+                    android:foregroundGravity="left"
+                    android:layout_gravity="center" />
+            </com.google.android.material.card.MaterialCardView>
+            <RelativeLayout
+                android:id="@+id/BinData"
+                android:layout_margin="4dp"
+                android:layout_toRightOf="@+id/BinImageCard"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+                <TextView
+                    android:layout_marginRight="4dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:id="@+id/tvbinname"
+                    tools:text="@tools:sample/full_names"
+                    android:textSize="16sp"
+                    android:padding="2dp"
+                    android:textColor="#9C27B0"
+                    android:textStyle="bold|italic"/>
+                <TextView
+                    android:layout_marginRight="4dp"
+                    android:layout_below="@+id/tvbinname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@tools:sample/full_names"
+                    android:textSize="12sp"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/tvbincode" />
+                <TextView
+                    android:layout_marginRight="4dp"
+                    android:layout_below="@+id/tvbincode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:text="@tools:sample/full_names"
+                    android:padding="2dp"
+                    android:textSize="16sp"
+                    android:gravity="left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:id="@+id/tvDesc" />
+
+                <Button
+                    android:layout_marginLeft="5dp"
+                    android:id="@+id/btnEditBin"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="20dp"
                     android:backgroundTint="#4CAF50"
-                    android:drawableLeft="@android:drawable/ic_menu_edit">
+                    android:drawableEnd="@android:drawable/ic_menu_edit">
                 </Button>
-            </TableRow>
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
 </LinearLayout>
