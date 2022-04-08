@@ -26,9 +26,9 @@
                 android:layout_width="wrap_content">
                 <ImageView
                     android:id="@+id/BinImage"
-                    android:src="@drawable/garbage"
                     android:layout_width="100dp"
                     android:layout_height="80dp"
+                    android:background="@android:drawable/ic_menu_report_image"
                     android:scaleType="centerCrop"
                     android:foregroundGravity="left"
                     android:layout_gravity="center" />
@@ -37,7 +37,7 @@
                 android:id="@+id/BinData"
                 android:layout_margin="4dp"
                 android:layout_toRightOf="@+id/BinImageCard"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent">
                 <TextView
                     android:layout_marginRight="4dp"
